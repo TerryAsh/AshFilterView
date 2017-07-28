@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'AshFilterView_Example' do
+  pod 'AshFilterView', :path => '../'
+
+  target 'AshFilterView_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end
