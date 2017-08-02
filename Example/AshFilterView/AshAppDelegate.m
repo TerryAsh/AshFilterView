@@ -7,12 +7,17 @@
 //
 
 #import "AshAppDelegate.h"
+#import "AshViewController.h"
 
 @implementation AshAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [AshViewController new];
+    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

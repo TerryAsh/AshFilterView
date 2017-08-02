@@ -23,7 +23,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		70F0F68033F53182FC0AB29B /* Pods_AshFilterView_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 852BE20B8C65FEFD1CAE24A8 /* Pods_AshFilterView_Example.framework */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		BA2C72531F31A9600039529C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2C72521F31A9600039529C /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +38,7 @@
 
 /* Begin PBXFileReference section */
 		081BE43E9000CF03C03A722F /* Pods-AshFilterView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AshFilterView_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AshFilterView_Example/Pods-AshFilterView_Example.release.xcconfig"; sourceTree = "<group>"; };
-		15F584E3F3AF7DB42ED4A74A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		15F584E3F3AF7DB42ED4A74A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		359383A61EA3C4667063F08B /* Pods-AshFilterView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AshFilterView_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AshFilterView_Example/Pods-AshFilterView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* AshFilterView_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AshFilterView_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -64,9 +64,9 @@
 		73304C5C0ED7967078F9BD47 /* Pods-AshFilterView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AshFilterView_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AshFilterView_Tests/Pods-AshFilterView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8446CEDA3AFBDA51641C076C /* Pods-AshFilterView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AshFilterView_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AshFilterView_Tests/Pods-AshFilterView_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		852BE20B8C65FEFD1CAE24A8 /* Pods_AshFilterView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AshFilterView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		ED6FDF2BE5762FE137006E8E /* AshFilterView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = AshFilterView.podspec; path = ../AshFilterView.podspec; sourceTree = "<group>"; };
-		FDCB6A530E50F86A24DE4F9B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		BA2C72521F31A9600039529C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		ED6FDF2BE5762FE137006E8E /* AshFilterView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AshFilterView.podspec; path = ../AshFilterView.podspec; sourceTree = "<group>"; };
+		FDCB6A530E50F86A24DE4F9B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,10 +109,11 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				BA2C72521F31A9600039529C /* Default-568h@2x.png */,
+				6003F58C195388D20070C39A /* Frameworks */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for AshFilterView */,
 				6003F5B5195388D20070C39A /* Tests */,
-				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				4BA3C04443BC087CA6FD6A39 /* Pods */,
 			);
@@ -145,7 +146,6 @@
 			children = (
 				6003F59C195388D20070C39A /* AshAppDelegate.h */,
 				6003F59D195388D20070C39A /* AshAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* AshViewController.h */,
 				6003F5A6195388D20070C39A /* AshViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -279,8 +279,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				BA2C72531F31A9600039529C /* Default-568h@2x.png in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
@@ -371,10 +371,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-AshFilterView_Example/Pods-AshFilterView_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AshFilterView/AshFilterView.framework",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AshFilterView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
