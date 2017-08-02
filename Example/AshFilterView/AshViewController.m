@@ -7,12 +7,17 @@
 //
 
 #import "AshViewController.h"
-@import AshFilterView;
+#import <AshFilterView/AshFilterView.h>
 
-@interface AshViewController ()<AshFilterViewDataSource>
+@interface AshViewController ()<AshFilterViewDataSource ,AshFilterViewDelegate>
 
 @property (nonatomic ,strong) AshFilterView *filterView;
 @property (nonatomic ,strong) NSArray<NSString *> *filterTabTitles;
+@property (nonatomic ,strong) NSArray<NSString *> *multiListDatas;
+@property (nonatomic ,strong) NSArray<NSString *> *singleListDatas;
+
+@property (nonatomic ,strong) NSMutableArray<NSString *> *selectedTitles;
+
 
 @end
 
@@ -22,6 +27,7 @@
     if (!_filterView) {
         _filterView = [[AshFilterView alloc] initWithFrame:self.view.frame];
         _filterView.dataSource = self;
+        _filterView.delegate = self;
         [self.view addSubview:_filterView];
     }
     return _filterView;
@@ -32,6 +38,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.filterTabTitles = @[@"级连列表",@"单选列表",@"多选列表"];
+    self.multiListDatas = @[@"1",@"2",@"3"];
+    self.singleListDatas = @[@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"j"];
+    
+    self.selectedTitles = [[NSMutableArray alloc] initWithArray:self.filterTabTitles];
+
     [self.view addSubview:self.filterView];
     
     [self.filterView reloadData];
@@ -43,15 +54,52 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark delegate
+- (void)ash_filterView:(AshFilterView *) filterView
+didSelectedListRowNumbers:(NSArray<NSNumber *> *) selectedRowNumbers{
+    NSMutableString *title = [NSMutableString new];
+    if (selectedRowNumbers.count > 0) {
+        switch (filterView.selectedTabIndex) {
+            case 1:{
+                NSNumber *selectedIndex = selectedRowNumbers[0];
+                NSString *selectedTitle = self.singleListDatas[selectedIndex.integerValue];
+                [title appendString:selectedTitle];
+            }
+                break;
+            case 2:{
+                if (selectedRowNumbers.count > 1) {
+                    [title appendString:@"多选"];
+                } else {
+                    NSNumber *selectedIndex = selectedRowNumbers[0];
+                    NSString *selectedTitle = self.multiListDatas[selectedIndex.integerValue];
+                    [title appendString:selectedTitle];
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    self.selectedTitles[filterView.selectedTabIndex] = title;
+    [filterView reloadTabbar];;
+}
 
-#pragma mark delegate
-#pragma mark delegate
+- (void)ash_filterView:(AshFilterView *) filterView
+didSelectedHierarchyItems:(NSArray<NSString *> *) selectedItems{
+    
+}
+
+#pragma mark dataSource
 - (NSInteger)ash_filterViewNumberOfTabs:(AshFilterView *)filterView{
     return self.filterTabTitles.count;
 }
 
 - (NSString *)ash_filterView:(AshFilterView *) filterView titleForTab:(NSInteger) tabIndex{
-    return  self.filterTabTitles[tabIndex];
+    NSString *selectedTitle = self.selectedTitles[tabIndex];
+    if (0 == selectedTitle.length) {
+        selectedTitle = self.filterTabTitles[tabIndex];
+    }
+    return  selectedTitle;
 }
 
 - (NSArray<NSDictionary<NSString *,NSArray<NSString *> *> *> *)ash_filterView:(AshFilterView *) filterView
@@ -71,10 +119,10 @@
         case 0:
             break;
         case 1:
-            datas = @[@"1",@"2",@"3"];
+            datas = self.singleListDatas;
             break;
         case 2:
-            datas = @[@"a",@"b",@"c",@"d",@"e"];
+            datas = self.multiListDatas;
             break;
             
         default:

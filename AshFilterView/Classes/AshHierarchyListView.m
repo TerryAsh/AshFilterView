@@ -8,6 +8,7 @@
 
 #import "AshHierarchyListView.h"
 #import "FrameAccessor.h"
+
 static NSString *AshMultiListCellID = @"AshMultiListCellID";
 
 @interface AshHierarchyListView()<UITableViewDelegate ,UITableViewDataSource>{
@@ -45,7 +46,6 @@ static NSString *AshMultiListCellID = @"AshMultiListCellID";
     }];
     [self.tables removeAllObjects];
     
-
     //build new tables
     
     for (NSInteger  i = 0; i <= datas.count; i++) {

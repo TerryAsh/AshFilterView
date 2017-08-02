@@ -24,16 +24,17 @@ typedef enum : NSUInteger {
     UICollectionView *_tabbar;
     NSInteger _numOfTabs;
     NSInteger _selectedIndex;
-    NSMutableArray<NSMutableArray<NSNumber *> *> *_selectedListEntries;
+    NSMutableArray<NSMutableArray<NSNumber *> *> *_selectedListRows;
     AshFilterViewType_t _types[1024];
 }
-
+@property (readonly) NSInteger selectedTabIndex;
 @property (nonatomic ,weak) id<AshFilterViewDelegate> delegate;
 @property (nonatomic ,weak) id<AshFilterViewDataSource> dataSource;
 @property (nonatomic ,assign) BOOL needsHideBottom;
 //desinated
 - (instancetype)initWithFrame:(CGRect)frame;
 
+- (void)reloadTabbar;
 - (void)reloadData;
 
 - (void)scrollTo:(NSInteger) index;
@@ -41,6 +42,13 @@ typedef enum : NSUInteger {
 @end
 
 @protocol AshFilterViewDelegate <NSObject>
+
+@optional
+- (void)ash_filterView:(AshFilterView *) filterView
+   didSelectedListRowNumbers:(NSArray<NSNumber *> *) selectedRowNumbers;
+
+- (void)ash_filterView:(AshFilterView *) filterView
+didSelectedHierarchyItems:(NSArray<NSString *> *) selectedItems;
 
 @end
 

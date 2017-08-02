@@ -25,6 +25,7 @@
 @implementation AshFilterView
 @synthesize tabbar = _tabbar;
 @synthesize containerView = _containerView;
+@synthesize selectedTabIndex = _selectedIndex;
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
@@ -34,13 +35,17 @@
         containerframe.size.height = frame.size.height - self.tabbar.frame.size.height;
         self.containerView.frame = containerframe;
         
-        _selectedListEntries = [NSMutableArray new];
+        _selectedListRows = [NSMutableArray new];
     }
     return self;
 }
 
+- (void)reloadTabbar{
+    [self.tabbar reloadData];
+}
+
 - (void)reloadData{
-    [_selectedListEntries removeAllObjects];
+    [_selectedListRows removeAllObjects];
     [self.containerView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj removeFromSuperview];
     }];
@@ -50,7 +55,7 @@
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(ash_filterView:preferredTypAt:)]) {
         _numOfTabs = [self.dataSource ash_filterViewNumberOfTabs:self] ;
         for (int i = 0 ; i < _numOfTabs; i++) {
-            _selectedListEntries[i] = [NSMutableArray new];
+            _selectedListRows[i] = [NSMutableArray new];
             
             //add sub view
             _types[i] = [self.dataSource ash_filterView:self preferredTypAt:i];
@@ -59,8 +64,8 @@
                 case kAshFilterViewTypeSingleList:{
                     if (self.dataSource && [self.dataSource respondsToSelector:@selector(ash_filterView:listdatasAt:)]) {
                         NSArray<NSString *> * datas = [self.dataSource ash_filterView:self listdatasAt:i];
-                        UITableView *listView = [self _createListTable];
-                        listView.tag = kAshFilterSubListTag + i;
+                        UITableView *listContainer = [self _createListTableContainer];
+                        listContainer.tag = kAshFilterSubListTag + i;
                     }
                 }
                     break;
@@ -90,10 +95,24 @@
     }
     _selectedIndex = index;
     UIView *dstView =[self.containerView viewWithTag:(kAshFilterSubListTag + index)];
-    if ([dstView respondsToSelector:@selector(reloadData)]) {
-        [dstView performSelector:@selector(reloadData)];
-    }
     [self.containerView bringSubviewToFront:dstView];
+    
+    AshFilterViewType_t viewStyle = _types[index];
+    switch (viewStyle) {
+        case kAshFilterViewTypeMultipleList:
+        case kAshFilterViewTypeSingleList:{
+            [dstView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([obj respondsToSelector:@selector(reloadData)]) {
+                    [obj performSelector:@selector(reloadData)];
+                    *stop = YES;
+                }
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+    
 }
 
 #pragma mark private
@@ -107,17 +126,26 @@
     return multiListView;
 }
 
-- (UITableView *)_createListTable{
+- (UIView *)_createListTableContainer{
     CGRect frame = self.containerView.frame;
     frame.size.height *= .5;
     frame.origin.y = 0;
+    UIView *container = [[UIView alloc] initWithFrame:frame];
+    
     UITableView *listView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    listView.height -= 60;
     listView.dataSource = self;
     listView.delegate = self;
     [listView registerClass:[UITableViewCell class]
      forCellReuseIdentifier:kAshFilterViewListCellID];
-    [self.containerView addSubview:listView];
-    return listView;
+    [container addSubview:listView];
+    
+    UIButton *ensureButton = [self _createEnsureButton];
+    ensureButton.top = listView.bottom;
+    [container addSubview:ensureButton];
+
+    [self.containerView addSubview:container];
+    return container;
 }
 
 #pragma mark getter setter
@@ -181,13 +209,31 @@
     [self.tabbar reloadData];
 }
 
+#pragma mark private
+- (UIButton *)_createEnsureButton{
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, self.width - 20, 40)];
+    [btn setTitle:@"确定" forState:UIControlStateNormal];
+    [btn addTarget:self
+            action:@selector(onPressedEnsureBtn:)
+  forControlEvents:UIControlEventTouchUpInside];
+    btn.backgroundColor = [UIColor redColor];
+    return btn;
+}
+
 #pragma mark --handler
 - (void)onPressedContainer{
     self.needsHideBottom = YES;
 }
 
-#pragma mark delegate
+- (void)onPressedEnsureBtn:(UIButton *) btn{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(ash_filterView:didSelectedListRowNumbers:)]) {
+        NSArray<NSNumber *> *selectedRowAtCertainTab = _selectedListRows[_selectedIndex];
+        [self.delegate ash_filterView:self
+            didSelectedListRowNumbers:selectedRowAtCertainTab];
+    }
+}
 
+#pragma mark delegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
     return [touch.view isEqual:self.containerView];
 }

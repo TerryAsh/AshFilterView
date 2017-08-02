@@ -22,7 +22,7 @@ NSString * const kAshFilterViewListCellID = @"AshFilterViewListCellID";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kAshFilterViewListCellID];
     cell.textLabel.text = [self _listDatas][indexPath.row];
     
-    NSMutableArray<NSNumber *> * selectedItems = [self _selectedItems];
+    NSMutableArray<NSNumber *> * selectedItems = [self _selectedRows];
     if ([selectedItems containsObject:@(indexPath.row)]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
@@ -33,7 +33,7 @@ NSString * const kAshFilterViewListCellID = @"AshFilterViewListCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSMutableArray<NSNumber *> * selectedItems = [self _selectedItems];
+    NSMutableArray<NSNumber *> * selectedItems = [self _selectedRows];
     
     if (kAshFilterViewTypeSingleList == [self _currentListType]) {
         if (![selectedItems containsObject:@(indexPath.row)]) {
@@ -61,8 +61,8 @@ NSString * const kAshFilterViewListCellID = @"AshFilterViewListCellID";
     return datas;
 }
 
-- (NSMutableArray<NSNumber *> *)_selectedItems{
-   return  _selectedListEntries[_selectedIndex];
+- (NSMutableArray<NSNumber *> *)_selectedRows{
+   return  _selectedListRows[_selectedIndex];
 }
 
 - (AshFilterViewType_t)_currentListType{
