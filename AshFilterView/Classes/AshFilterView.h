@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef enum : NSUInteger {
+    kAshFilterViewTypeCustomized = 1,
     kAshFilterViewTypeSingleList,
     kAshFilterViewTypeMultipleList,
     kAshFilterViewTypeHierarchy,
@@ -23,7 +24,6 @@ typedef enum : NSUInteger {
     UIView *_containerView;
     UICollectionView *_tabbar;
     NSInteger _numOfTabs;
-    NSInteger _selectedIndex;
     NSMutableArray<NSMutableArray<NSNumber *> *> *_selectedListRows;
     AshFilterViewType_t _types[1024];
 }
@@ -61,6 +61,9 @@ didSelectedHierarchyItems:(NSArray<NSString *> *) selectedItems;
 
 - (AshFilterViewType_t)ash_filterView:(AshFilterView *) filterView
                      preferredTypAt:(NSInteger)tabIndex;
+
+- (UIView *)ash_filterView:(AshFilterView *) filterView
+          customizedViewAt:(NSInteger)tabIndex;
 
 - (NSArray<NSDictionary<NSString* ,NSArray<NSString *> *> *> *)ash_filterView:(AshFilterView *) filterView
                                                              hierarchyDatasAt:(NSInteger)tabIndex;

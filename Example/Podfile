@@ -3,6 +3,8 @@ use_frameworks!
 target 'AshFilterView_Example' do
   pod 'AshFilterView', :path => '../'
 
+    pod 'YTKNetwork'
+    pod 'SDWebImage'
   target 'AshFilterView_Tests' do
     inherit! :search_paths
 

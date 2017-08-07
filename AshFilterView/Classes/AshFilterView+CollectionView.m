@@ -41,13 +41,13 @@ static NSInteger kCellButtonTag = 1023;
         title = [self.dataSource ash_filterView:self titleForTab:indexPath.row];
     }
     [btn setTitle:title forState:UIControlStateNormal];
-    btn.selected = (indexPath.row == _selectedIndex);
+    btn.selected = (indexPath.row == self.selectedTabIndex);
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     self.needsHideBottom = NO;
-    _selectedIndex = indexPath.row;
+    [self scrollTo:indexPath.row];
    [collectionView reloadData];
     [self scrollTo:indexPath.row];
 }

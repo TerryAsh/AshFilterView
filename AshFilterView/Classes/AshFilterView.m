@@ -25,7 +25,7 @@
 @implementation AshFilterView
 @synthesize tabbar = _tabbar;
 @synthesize containerView = _containerView;
-@synthesize selectedTabIndex = _selectedIndex;
+@synthesize selectedTabIndex = _selectedTabIndex;
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
@@ -45,6 +45,7 @@
 }
 
 - (void)reloadData{
+    _selectedTabIndex = - 1;
     [_selectedListRows removeAllObjects];
     [self.containerView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj removeFromSuperview];
@@ -54,6 +55,7 @@
     
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(ash_filterView:preferredTypAt:)]) {
         _numOfTabs = [self.dataSource ash_filterViewNumberOfTabs:self] ;
+        UIView *subView = nil;
         for (int i = 0 ; i < _numOfTabs; i++) {
             _selectedListRows[i] = [NSMutableArray new];
             
@@ -64,37 +66,50 @@
                 case kAshFilterViewTypeSingleList:{
                     if (self.dataSource && [self.dataSource respondsToSelector:@selector(ash_filterView:listdatasAt:)]) {
                         NSArray<NSString *> * datas = [self.dataSource ash_filterView:self listdatasAt:i];
-                        UITableView *listContainer = [self _createListTableContainer];
-                        listContainer.tag = kAshFilterSubListTag + i;
+                        subView = [self _createListTableContainer];
                     }
                 }
                     break;
                 case kAshFilterViewTypeHierarchy:{
                     if (self.dataSource && [self.dataSource respondsToSelector:@selector(ash_filterView:hierarchyDatasAt:)]) {
-                        NSArray<NSDictionary<NSString * ,NSArray<NSString *> *> *> * datas = [self.dataSource ash_filterView:self hierarchyDatasAt:0];
+                        NSArray<NSDictionary<NSString * ,NSArray<NSString *> *> *> * datas = [self.dataSource ash_filterView:self hierarchyDatasAt:i];
                         AshHierarchyListView *hirarchyList = [self _createHierarchyTable];
                         hirarchyList.datas = datas;
-                        hirarchyList.tag = kAshFilterSubListTag + i;
+                        subView = hirarchyList;
                     }
                 }
                     break;
                 case kAshFilterViewTypeCollection:
                     break;
+                case kAshFilterViewTypeCustomized:{
+                    if (self.dataSource &&
+                            [self.dataSource respondsToSelector:@selector(ash_filterView:customizedViewAt:)]) {
+                        subView = [self.dataSource ash_filterView:self customizedViewAt:i];
+                    }
+                }
+                    break;
                 default:
                     break;
             }
             //
+            subView.tag = kAshFilterSubListTag + i;
+            subView.hidden = (i != 0);
+            [self.containerView addSubview:subView];
         }
     }
     
     [self scrollTo:0];
 }
 - (void)scrollTo:(NSInteger)index{
-    if (index >= _numOfTabs) {
+    if (index >= _numOfTabs || index == _selectedTabIndex) {
         return;
     }
-    _selectedIndex = index;
+    UIView *currentView =[self.containerView viewWithTag:(kAshFilterSubListTag + _selectedTabIndex)];
+    currentView.hidden = YES;
+    
+    _selectedTabIndex = index;
     UIView *dstView =[self.containerView viewWithTag:(kAshFilterSubListTag + index)];
+    dstView.hidden = NO;
     [self.containerView bringSubviewToFront:dstView];
     
     AshFilterViewType_t viewStyle = _types[index];
@@ -122,7 +137,6 @@
     frame.size.height *= .5;
     frame.origin.y = 0;
     AshHierarchyListView *multiListView = [[AshHierarchyListView alloc] initWithFrame:frame];
-    [self.containerView addSubview:multiListView];
     return multiListView;
 }
 
@@ -144,7 +158,6 @@
     ensureButton.top = listView.bottom;
     [container addSubview:ensureButton];
 
-    [self.containerView addSubview:container];
     return container;
 }
 
@@ -227,7 +240,7 @@
 
 - (void)onPressedEnsureBtn:(UIButton *) btn{
     if (self.delegate && [self.delegate respondsToSelector:@selector(ash_filterView:didSelectedListRowNumbers:)]) {
-        NSArray<NSNumber *> *selectedRowAtCertainTab = _selectedListRows[_selectedIndex];
+        NSArray<NSNumber *> *selectedRowAtCertainTab = _selectedListRows[_selectedTabIndex];
         [self.delegate ash_filterView:self
             didSelectedListRowNumbers:selectedRowAtCertainTab];
     }

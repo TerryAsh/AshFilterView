@@ -56,17 +56,17 @@ NSString * const kAshFilterViewListCellID = @"AshFilterViewListCellID";
 - (NSArray<NSString *> *)_listDatas{
     NSArray<NSString *> *datas = @[];
     if ([self.dataSource respondsToSelector:@selector(ash_filterView:listdatasAt:)]) {
-        datas = [self.dataSource ash_filterView:self listdatasAt:_selectedIndex];
+        datas = [self.dataSource ash_filterView:self listdatasAt:self.selectedTabIndex];
     }
     return datas;
 }
 
 - (NSMutableArray<NSNumber *> *)_selectedRows{
-   return  _selectedListRows[_selectedIndex];
+   return  _selectedListRows[self.selectedTabIndex];
 }
 
 - (AshFilterViewType_t)_currentListType{
-    return _types[_selectedIndex];
+    return _types[self.selectedTabIndex];
 }
 
 @end

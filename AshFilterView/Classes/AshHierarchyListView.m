@@ -54,6 +54,7 @@ static NSString *AshMultiListCellID = @"AshMultiListCellID";
         tableView.left = i * self.width * .5;
         tableView.dataSource = self;
         tableView.delegate = self;
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [self.tables addObject:tableView];
         
         [self addSubview:tableView];
@@ -82,12 +83,12 @@ static NSString *AshMultiListCellID = @"AshMultiListCellID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AshMultiListCellID];
+    NSInteger tabIndex = [self.tables indexOfObject:tableView];
     if (nil == cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:AshMultiListCellID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    NSInteger tabIndex = [self.tables indexOfObject:tableView];
     NSString *selectedKey = self.selectedKeys[tabIndex];
 
     if (tabIndex == 0) {
@@ -113,6 +114,7 @@ static NSString *AshMultiListCellID = @"AshMultiListCellID";
     //reload selected rows
     if (0 == tabIndex) {
         self.selectedKeys[0] = self.datas[0].allKeys[indexPath.row];
+        self.selectedKeys[1] = @"";
     } else {
         NSString *selectedKey = self.selectedKeys[tabIndex - 1];
         if (selectedKey) {
